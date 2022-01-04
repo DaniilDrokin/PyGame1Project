@@ -28,7 +28,7 @@ def game():
     class Egg(pygame.sprite.Sprite):
         def __init__(self, position, number):
             super().__init__(egg_sprites)
-            self.image = load_image('gee.png')
+            self.image = load_image('egg.png')
             self.rect = self.image.get_rect()
             self.mask = pygame.mask.from_surface(self.image)
             self.position = number
@@ -79,7 +79,9 @@ def game():
             self.rect.y = 500
             self.score = 0
 
-        def move(self, x, y):
+        def move(self, x, y, photo):
+            self.image = load_image(photo)
+            self.mask = pygame.mask.from_surface(self.image)
             self.rect.x = x
             self.rect.y = y
 
@@ -117,7 +119,7 @@ def game():
 
     clock = pygame.time.Clock()
     running = True
-    positions_for_eggs = [(0, 200), (0, 425), (1200, 200), (1200, 425)]
+    positions_for_eggs = [(55, 200), (45, 425), (1230, 200), (1230, 425)]
 
     my_event = pygame.USEREVENT + 1
     timer = 3000
@@ -146,11 +148,11 @@ def game():
                 if second_egg:
                     if number == 0:
                         number = random.choice([1, 2, 3])
-                    if number == 1:
+                    elif number == 1:
                         number = random.choice([0, 2, 3])
-                    if number == 2:
+                    elif number == 2:
                         number = random.choice([0, 1, 3])
-                    if number == 3:
+                    elif number == 3:
                         number = random.choice([0, 1, 2])
                     Egg(positions_for_eggs[number], number)
                 if count_of_eggs == 10 and velocity < 15:
@@ -159,21 +161,22 @@ def game():
                     timer -= 300
                     pygame.time.set_timer(my_event, timer)
                     count_of_eggs = 0
-                if count_of_eggs == 15 and egg_flag:
+                if count_of_eggs == 20 and egg_flag:
                     egg_flag = False
                     second_egg = True
 
             if event.type == pygame.KEYDOWN and heart_sprites:
-                if event.key == pygame.K_r:
-                    basket.move(240, 250)
+                if event.key == pygame.K_e:
+                    basket.move(240, 340, "wolf_3.png")
                 if event.key == pygame.K_f:
-                    basket.move(240, 475)
+                    basket.move(240, 410, "wolf_4.png")
                 if event.key == pygame.K_i:
-                    basket.move(835, 250)
+                    basket.move(560, 340, "wolf_1.png")
                 if event.key == pygame.K_j:
-                    basket.move(835, 475)
+                    basket.move(600, 410, "wolf_2.png")
 
         screen.fill((179, 221, 247))
+        screen.blit(load_image("fence.png"), (0, 440))
         all_sprites.draw(screen)
         all_sprites.update()
         egg_sprites.draw(screen)
@@ -186,6 +189,11 @@ def game():
 
         screen.blit(load_image("bush.png"), (-13, 580))
         screen.blit(load_image("bush.png"), (1087, 580))
+        screen.blit(load_image("chicken.png"), (-70, 380))
+        screen.blit(load_image("chicken_2.png"), (1300, 155))
+        screen.blit(load_image("rooster.png"), (1300, 350))
+        screen.blit(load_image("chick.png"), (-20, 215))
+        screen.blit(load_image("nest.png"), (-80, 165))
 
         if not heart_sprites:
             f_1 = pygame.font.Font('data/Rex Bold.ttf', 200)

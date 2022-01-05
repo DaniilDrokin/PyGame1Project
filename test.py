@@ -4,8 +4,8 @@ import pygame
 pygame.init()
 
 FPS = 10
-WIDTH = 200
-HEIGHT = 200
+WIDTH = 700
+HEIGHT = 700
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 
@@ -29,7 +29,6 @@ def load_image(name, color_key=None):
     return image
 
 
-
 class AnimatedSprite(pygame.sprite.Sprite):
     def __init__(self, sheet, columns, rows, x, y):
         super().__init__(all_sprites)
@@ -51,7 +50,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.image = self.frames[self.cur_frame]
 
 
-dragon = AnimatedSprite(load_image("Новый проект.png"), 8, 1, 50, 50)
+dragon = AnimatedSprite(load_image("Новый проект.png"), 6, 1, 50, 50)
 
 running = True
 
@@ -59,7 +58,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    screen.fill(pygame.Color("black"))
+    screen.fill((148, 137, 109))
     all_sprites.draw(screen)
     all_sprites.update()
     pygame.display.flip()

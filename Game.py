@@ -29,6 +29,7 @@ def game():
         def __init__(self, position, number):
             super().__init__(egg_sprites)
             self.image = load_image('egg.png')
+            self.sound_flag = True
             self.rect = self.image.get_rect()
             self.mask = pygame.mask.from_surface(self.image)
             self.position = number
@@ -52,6 +53,9 @@ def game():
             if pygame.sprite.collide_mask(self, grass):
                 self.flag = True
                 self.image = load_image('broken_egg.png')
+                if self.sound_flag:
+                    broken_sound.play()
+                    self.sound_flag = False
                 for elem in heart_sprites:
                     while self.count == 1:
                         elem.kill()
@@ -69,14 +73,14 @@ def game():
             self.rect.x = x
             self.rect.bottom = height - 100
 
-    class Basket(pygame.sprite.Sprite):
+    class Wolf(pygame.sprite.Sprite):
         def __init__(self):
             super().__init__(all_sprites)
-            self.image = load_image('basket.png')
+            self.image = load_image('wolf_1.png')
             self.rect = self.image.get_rect()
             self.mask = pygame.mask.from_surface(self.image)
-            self.rect.x = 500
-            self.rect.y = 500
+            self.rect.x = 560
+            self.rect.y = 340
             self.score = 0
 
         def move(self, x, y, photo):
@@ -88,6 +92,7 @@ def game():
         def update(self):
             for elem in egg_sprites:
                 if pygame.sprite.collide_mask(self, elem) and not elem.flag:
+                    fall_sound.play()
                     elem.kill()
                     self.score += 1
 
@@ -106,6 +111,16 @@ def game():
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('НУ, ПОГОДИ!')
 
+    sad_sound = pygame.mixer.Sound("data/sad_sound.wav")
+    sad_sound.set_volume(0.5)
+    broken_sound = pygame.mixer.Sound("data/egg_shell.wav")
+    win_sound = pygame.mixer.Sound("data/win.wav")
+    win_sound.set_volume(0.5)
+    sound = pygame.mixer.Sound("data/background_sound.wav")
+    sound.set_volume(0.2)
+    fall_sound = pygame.mixer.Sound("data/fall.wav")
+    fall_sound.set_volume(0.4)
+
     all_sprites = pygame.sprite.Group()
     egg_sprites = pygame.sprite.Group()
     heart_sprites = pygame.sprite.Group()
@@ -113,12 +128,14 @@ def game():
     f = pygame.font.Font('data/Rex Bold.ttf', 100)
 
     grass = Grass()
-    basket = Basket()
+    wolf = Wolf()
     house_1 = House('pixel_house_1.png', 0)
     house_2 = House('pixel_house_2.png', 1020)
 
     clock = pygame.time.Clock()
     running = True
+    sound_flag = True
+    background_sound_flag = True
     positions_for_eggs = [(55, 200), (45, 425), (1230, 200), (1230, 425)]
 
     my_event = pygame.USEREVENT + 1
@@ -134,8 +151,10 @@ def game():
         name = 'heart' + str(i)
         Heart(pos_x_hearts, name)
         pos_x_hearts -= 125
-
     while running:
+        if background_sound_flag:
+            sound.play(loops=-1)
+            background_sound_flag = False
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
@@ -161,19 +180,19 @@ def game():
                     timer -= 300
                     pygame.time.set_timer(my_event, timer)
                     count_of_eggs = 0
-                if count_of_eggs == 20 and egg_flag:
+                if count_of_eggs == 15 and egg_flag:
                     egg_flag = False
                     second_egg = True
 
             if event.type == pygame.KEYDOWN and heart_sprites:
                 if event.key == pygame.K_e:
-                    basket.move(240, 340, "wolf_3.png")
+                    wolf.move(240, 340, "wolf_3.png")
                 if event.key == pygame.K_f:
-                    basket.move(240, 410, "wolf_4.png")
+                    wolf.move(240, 410, "wolf_4.png")
                 if event.key == pygame.K_i:
-                    basket.move(560, 340, "wolf_1.png")
+                    wolf.move(560, 340, "wolf_1.png")
                 if event.key == pygame.K_j:
-                    basket.move(600, 410, "wolf_2.png")
+                    wolf.move(600, 410, "wolf_2.png")
 
         screen.fill((179, 221, 247))
         screen.blit(load_image("fence.png"), (0, 440))
@@ -184,7 +203,7 @@ def game():
         heart_sprites.draw(screen)
         heart_sprites.update()
 
-        text = f.render(f'{basket.score}', True, (196, 30, 58))
+        text = f.render(f'{wolf.score}', True, (196, 30, 58))
         screen.blit(text, (300, 80))
 
         screen.blit(load_image("bush.png"), (-13, 580))
@@ -196,9 +215,27 @@ def game():
         screen.blit(load_image("nest.png"), (-80, 165))
 
         if not heart_sprites:
-            f_1 = pygame.font.Font('data/Rex Bold.ttf', 200)
-            text = f_1.render(f'ВЫ ПРОИГРАЛИ!', True, (196, 30, 58))
-            screen.blit(text, (100, 300))
+            sound.stop()
+            pygame.draw.rect(screen, (255, 250, 205), (0, 0, width, height), 0)
+            if wolf.score >= 0:
+                f_1 = pygame.font.Font('data/Rex Bold.ttf', 130)
+                obj = 'ВЫ ХОРОШО ДЕРЖАЛИСЬ!'
+                if sound_flag:
+                    win_sound.play()
+                    sound_flag = False
+                screen.blit(load_image("wolf_6.png"), (500, 375))
+                text = f_1.render(obj, True, (196, 30, 58))
+                screen.blit(text, (60, 250))
+            else:
+                f_1 = pygame.font.Font('data/Rex Bold.ttf', 200)
+                obj = 'ВЫ ПРОИГРАЛИ!'
+                if sound_flag:
+                    sad_sound.play()
+                    sound_flag = False
+                screen.blit(load_image("wolf_7.png"), (400, 450))
+                text = f_1.render(obj, True, (196, 30, 58))
+                screen.blit(text, (100, 250))
+
             for egg in egg_sprites:
                 egg.kill()
 

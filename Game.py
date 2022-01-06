@@ -1,5 +1,4 @@
 import random
-
 import pygame
 import os
 
@@ -136,6 +135,7 @@ def game():
     running = True
     sound_flag = True
     background_sound_flag = True
+    end_flag = False
     positions_for_eggs = [(55, 200), (45, 425), (1230, 200), (1230, 425)]
 
     my_event = pygame.USEREVENT + 1
@@ -158,6 +158,7 @@ def game():
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
+                sound.stop()
                 running = False
 
             if event.type == my_event and heart_sprites:
@@ -184,14 +185,16 @@ def game():
                     egg_flag = False
                     second_egg = True
 
-            if event.type == pygame.KEYDOWN and heart_sprites:
-                if event.key == pygame.K_e:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and end_flag:
+                    running = False
+                if event.key == pygame.K_e and heart_sprites:
                     wolf.move(240, 340, "wolf_3.png")
-                if event.key == pygame.K_f:
+                if event.key == pygame.K_f and heart_sprites:
                     wolf.move(240, 410, "wolf_4.png")
-                if event.key == pygame.K_i:
+                if event.key == pygame.K_i and heart_sprites:
                     wolf.move(560, 340, "wolf_1.png")
-                if event.key == pygame.K_j:
+                if event.key == pygame.K_j and heart_sprites:
                     wolf.move(600, 410, "wolf_2.png")
 
         screen.fill((179, 221, 247))
@@ -216,8 +219,10 @@ def game():
 
         if not heart_sprites:
             sound.stop()
+            end_flag = True
             pygame.draw.rect(screen, (255, 250, 205), (0, 0, width, height), 0)
-            if wolf.score >= 0:
+            f_2 = pygame.font.Font('data/Rex Bold.ttf', 30)
+            if wolf.score >= 100:
                 f_1 = pygame.font.Font('data/Rex Bold.ttf', 130)
                 obj = 'ВЫ ХОРОШО ДЕРЖАЛИСЬ!'
                 if sound_flag:
@@ -235,6 +240,8 @@ def game():
                 screen.blit(load_image("wolf_7.png"), (400, 450))
                 text = f_1.render(obj, True, (196, 30, 58))
                 screen.blit(text, (100, 250))
+            text_2 = f_2.render("НАЖМИТЕ SPACE, ЧТОБЫ ВЫЙТИ", True, (196, 30, 58))
+            screen.blit(text_2, (500, 760))
 
             for egg in egg_sprites:
                 egg.kill()

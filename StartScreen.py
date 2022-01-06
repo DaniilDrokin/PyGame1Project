@@ -1,7 +1,21 @@
 import pygame
+import os
+from Game import game
 
 
 def start_screen():
+    def load_image(name, colorkey=None):
+        fullname = os.path.join("data", name)
+        image = pygame.image.load(fullname)
+        if colorkey is not None:
+            image = image.convert()
+            if colorkey == -1:
+                colorkey = image.get_at((0, 0))
+            image.set_colorkey(colorkey)
+        else:
+            image = image.convert_alpha()
+        return image
+
     class Button(pygame.sprite.Sprite):
         def __init__(self, x, y, radius, name):
             super().__init__(all_sprites)
@@ -11,11 +25,16 @@ def start_screen():
             self.rect = pygame.Rect(x, y, 2 * radius, 2 * radius)
 
         def update(self, *args):
-            if args and args[0].type == pygame.MOUSEBUTTONDOWN and args[0].button == 1 and self.rect.collidepoint(args[0].pos):
-                print(self.name)
+            if args and args[0].type == pygame.MOUSEBUTTONDOWN and args[0].button == 1\
+                    and self.tip(args[0].pos):
+                button_sound.play()
+                return self.name
 
         def name(self):
             return self.name
+
+        def tip(self, pos):
+            return self.rect.collidepoint(pos)
 
     def draw():
         pygame.draw.rect(screen, (112, 112, 112), (0, 0, 1360, 800), 10)
@@ -56,9 +75,12 @@ def start_screen():
     font_1 = pygame.font.Font('data/Molot.ttf', 40)
     font_2 = pygame.font.Font('data/Days.ttf', 40)
     font_3 = pygame.font.Font('data/Rex Bold.ttf', 70)
+    font_4 = pygame.font.Font('data/Rex Bold.ttf', 50)
     text_1 = font_1.render(f'НУ, ПОГОДИ!', True, (196, 30, 58))
     text_2 = font_2.render(f'электроника', True, (0, 0, 0))
     text_3 = font_3.render(f'А|Д', True, (0, 0, 0))
+
+    button_sound = pygame.mixer.Sound("data/button.wav")
 
     running = True
     radius = 40
@@ -69,13 +91,37 @@ def start_screen():
         name = buttons[i]
         all_sprites.add(Button(x, y, radius, name))
     while running:
+        screen.fill((196, 195, 195))
+
+        for button in all_sprites:
+            if button.tip(pygame.mouse.get_pos()):
+                if button.name == 'Play':
+                    text_4 = font_4.render(f'Play', True, (0, 0, 0))
+                    screen.blit(text_4, (button.rect.x, button.rect.y - 40))
+                elif button.name == 'History':
+                    text_4 = font_4.render(f'History', True, (0, 0, 0))
+                    screen.blit(text_4, (button.rect.x - 30, button.rect.y - 40))
+                elif button.name == 'Settings':
+                    text_4 = font_4.render(f'Settings', True, (0, 0, 0))
+                    screen.blit(text_4, (button.rect.x - 40, button.rect.y + 85))
+                elif button.name == 'Records':
+                    text_4 = font_4.render(f'Records', True, (0, 0, 0))
+                    screen.blit(text_4, (button.rect.x - 40, button.rect.y + 85))
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 for button in all_sprites:
-                    button.update(event)
-        screen.fill((196, 195, 195))
+                    but = button.update(event)
+                    if but == 'Play':
+                        game()
+                    elif but == 'Records':
+                        pass
+                    elif but == 'History':
+                        pass
+                    elif but == 'Settings':
+                        pass
         all_sprites.draw(screen)
         all_sprites.update()
         draw()

@@ -63,8 +63,7 @@ def start_screen():
         screen.blit(text_1, (560, 75))
         screen.blit(text_2, (545, 656))
         screen.blit(text_3, (110, 80))
-        image = pygame.image.load('data/wolf.png')
-        screen.blit(image, (1050, 20))
+        screen.blit(load_image('wolf.png'), (1050, 20))
 
     pygame.init()
     size = 1360, 800
@@ -97,10 +96,10 @@ def start_screen():
             if button.tip(pygame.mouse.get_pos()):
                 if button.name == 'Play':
                     text_4 = font_4.render(f'Play', True, (0, 0, 0))
-                    screen.blit(text_4, (button.rect.x, button.rect.y - 40))
+                    screen.blit(text_4, (button.rect.x, button.rect.y - 45))
                 elif button.name == 'History':
                     text_4 = font_4.render(f'History', True, (0, 0, 0))
-                    screen.blit(text_4, (button.rect.x - 30, button.rect.y - 40))
+                    screen.blit(text_4, (button.rect.x - 30, button.rect.y - 45))
                 elif button.name == 'Settings':
                     text_4 = font_4.render(f'Settings', True, (0, 0, 0))
                     screen.blit(text_4, (button.rect.x - 40, button.rect.y + 85))

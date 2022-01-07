@@ -27,11 +27,36 @@ def game():
     class Egg(pygame.sprite.Sprite):
         def __init__(self, position, number):
             super().__init__(egg_sprites)
-            self.image = load_image('egg.png')
+            self.images = []
+            self.position = number
+
+            if self.position == 0 or self.position == 1:
+                self.images.append(load_image('egg1.png'))
+                self.images.append(load_image('egg6.png'))
+                self.images.append(load_image('egg2.png'))
+                self.images.append(load_image('egg7.png'))
+                self.images.append(load_image('egg3.png'))
+                self.images.append(load_image('egg8.png'))
+                self.images.append(load_image('egg4.png'))
+                self.images.append(load_image('egg5.png'))
+            else:
+                self.images.append(load_image('egg1.png'))
+                self.images.append(load_image('egg5.png'))
+                self.images.append(load_image('egg4.png'))
+                self.images.append(load_image('egg8.png'))
+                self.images.append(load_image('egg3.png'))
+                self.images.append(load_image('egg7.png'))
+                self.images.append(load_image('egg2.png'))
+                self.images.append(load_image('egg6.png'))
+
+            self.index = 0
+            self.counter = 0
+            self.frame = 8
+            self.image = self.images[self.index]
+
             self.sound_flag = True
             self.rect = self.image.get_rect()
             self.mask = pygame.mask.from_surface(self.image)
-            self.position = number
             self.rect.x = position[0]
             self.rect.y = position[1]
             self.flag = False
@@ -49,6 +74,10 @@ def game():
                     self.rect = self.rect.move(-speed, 0)
                 if not pygame.sprite.collide_mask(self, grass) and not pygame.sprite.collide_mask(self, house_2):
                     self.rect = self.rect.move(0, speed + 2)
+
+            if speed % 20 == 0 and self.frame >= 4:
+                self.frame -= 1
+
             if pygame.sprite.collide_mask(self, grass):
                 self.flag = True
                 self.image = load_image('broken_egg.png')
@@ -59,6 +88,14 @@ def game():
                     while self.count == 1:
                         elem.kill()
                         self.count -= 1
+            else:
+                self.counter += 1
+                if self.counter == self.frame:
+                    self.index += 1
+                    self.counter = 0
+                if self.index >= len(self.images):
+                    self.index = 0
+                self.image = self.images[self.index]
 
         def flag(self):
             return self.flag
@@ -167,13 +204,13 @@ def game():
                 Egg(positions_for_eggs[number], number)
                 if second_egg:
                     if number == 0:
-                        number = random.choice([1, 2, 3])
+                        number = random.choice([1, 2, 2, 3, 3])
                     elif number == 1:
-                        number = random.choice([0, 2, 3])
+                        number = random.choice([0, 2, 2, 3, 3])
                     elif number == 2:
-                        number = random.choice([0, 1, 3])
+                        number = random.choice([0, 0, 1, 1, 3])
                     elif number == 3:
-                        number = random.choice([0, 1, 2])
+                        number = random.choice([0, 0, 1, 1, 2])
                     Egg(positions_for_eggs[number], number)
                 if count_of_eggs == 10 and velocity < 15:
                     velocity += 1

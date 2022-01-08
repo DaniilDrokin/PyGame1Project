@@ -18,7 +18,7 @@ def start_screen():
 
     class Button(pygame.sprite.Sprite):
         def __init__(self, x, y, radius, name):
-            super().__init__(all_sprites)
+            super().__init__(button_sprites)
             self.name = name
             self.image = pygame.Surface((2 * radius, 2 * radius), pygame.SRCALPHA, 32)
             pygame.draw.circle(self.image, (196, 30, 58), (radius, radius), radius)
@@ -68,6 +68,7 @@ def start_screen():
     pygame.init()
     size = 1360, 800
     all_sprites = pygame.sprite.Group()
+    button_sprites = pygame.sprite.Group()
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('Начальный экран')
 
@@ -122,6 +123,7 @@ def start_screen():
                     elif but == 'Settings':
                         pass
         all_sprites.draw(screen)
+        button_sprites.draw(screen)
         all_sprites.update()
         draw()
         pygame.display.flip()

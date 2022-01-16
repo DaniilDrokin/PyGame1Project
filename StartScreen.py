@@ -30,7 +30,7 @@ def start_screen():
                 button_sound.play()
                 return self.name
 
-        def name(self):
+        def give_name(self):
             return self.name
 
         def tip(self, pos):
@@ -95,16 +95,16 @@ def start_screen():
 
         for button in all_sprites:
             if button.tip(pygame.mouse.get_pos()):
-                if button.name == 'Play':
+                if button.give_name() == 'Play':
                     text_4 = font_4.render(f'Play', True, (0, 0, 0))
                     screen.blit(text_4, (button.rect.x, button.rect.y - 45))
-                elif button.name == 'History':
+                elif button.give_name() == 'History':
                     text_4 = font_4.render(f'History', True, (0, 0, 0))
                     screen.blit(text_4, (button.rect.x - 30, button.rect.y - 45))
-                elif button.name == 'Settings':
+                elif button.give_name() == 'Settings':
                     text_4 = font_4.render(f'Settings', True, (0, 0, 0))
                     screen.blit(text_4, (button.rect.x - 40, button.rect.y + 85))
-                elif button.name == 'Records':
+                elif button.give_name() == 'Records':
                     text_4 = font_4.render(f'Records', True, (0, 0, 0))
                     screen.blit(text_4, (button.rect.x - 40, button.rect.y + 85))
 

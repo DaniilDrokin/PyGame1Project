@@ -107,7 +107,7 @@ def registration():
                     text_3 = font.render(login_text, True, (0, 0, 0))
                 else:
                     if 65 <= event.key <= 122 and event.key != 91 and event.key != 92 and event.key != 93\
-                            and len(login_text) < 18:
+                            and len(login_text) < 12:
                         login_text += chr(event.key)
                         text_3 = font.render(login_text, True, (0, 0, 0))
                         error_flag = False
@@ -120,7 +120,7 @@ def registration():
                     text_4 = font.render(password_text, True, (0, 0, 0))
                 else:
                     if 65 <= event.key <= 122 and event.key != 91 and event.key != 92 and event.key != 93\
-                            and len(password_text) < 18:
+                            and len(password_text) < 12:
                         password_text += chr(event.key)
                         text_4 = font.render(password_text, True, (0, 0, 0))
                         error_flag = False

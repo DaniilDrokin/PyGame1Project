@@ -1,6 +1,7 @@
 import random
 import pygame
 import os
+import sqlite3
 
 
 def game():
@@ -183,6 +184,7 @@ def game():
     pos_x_hearts = 1000
     egg_flag = True
     second_egg = False
+    record = 0
 
     for i in range(3):
         name = 'heart' + str(i)
@@ -224,6 +226,24 @@ def game():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and end_flag:
+                    conn = sqlite3.connect('data/Records.db')
+                    cursor = conn.cursor()
+
+                    with open("data/log_pas.txt") as file:
+                        data = list(map(str.strip, file.readlines()))
+                        for elem in data:
+                            login, password = elem.split()
+
+                    b = cursor.execute('''SELECT record FROM records
+                    WHERE login = (?)''', (login,)).fetchall()
+                    for elem in b:
+                        record = int(elem[0])
+                    print(record)
+                    if wolf.score > record:
+                        cursor.execute('''Update records set record = (?)
+                        WHERE login = (?) and  password = (?)''', (wolf.score, login, password))
+                    conn.commit()
+                    conn.close()
                     running = False
                 if event.key == pygame.K_e and heart_sprites:
                     wolf.move(240, 340, "wolf_3.png")

@@ -67,7 +67,6 @@ def start_screen():
 
     pygame.init()
     size = 1360, 800
-    all_sprites = pygame.sprite.Group()
     button_sprites = pygame.sprite.Group()
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('Начальный экран')
@@ -89,11 +88,11 @@ def start_screen():
     for i in range(4):
         x, y = coordinates[i]
         name = buttons[i]
-        all_sprites.add(Button(x, y, radius, name))
+        Button(x, y, radius, name)
     while running:
         screen.fill((196, 195, 195))
 
-        for button in all_sprites:
+        for button in button_sprites:
             if button.tip(pygame.mouse.get_pos()):
                 if button.give_name() == 'Play':
                     text_4 = font_4.render(f'Play', True, (0, 0, 0))
@@ -112,7 +111,7 @@ def start_screen():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                for button in all_sprites:
+                for button in button_sprites:
                     but = button.update(event)
                     if but == 'Play':
                         game()
@@ -122,9 +121,7 @@ def start_screen():
                         pass
                     elif but == 'Settings':
                         pass
-        all_sprites.draw(screen)
         button_sprites.draw(screen)
-        all_sprites.update()
         draw()
         pygame.display.flip()
 

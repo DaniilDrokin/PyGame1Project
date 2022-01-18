@@ -26,7 +26,7 @@ def registration():
             pass
 
     pygame.init()
-    size = 600, 300
+    size = 600, 330
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('Регистрация')
 
@@ -40,6 +40,7 @@ def registration():
     text_4 = font.render(f'', True, (0, 0, 0))
     text_5 = font_er.render(f'Извините, но вы не можете', True, (0, 0, 0))
     text_6 = font_er.render(f'использовать данный символ :(', True, (0, 0, 0))
+    text_8 = font_er.render(f'или вы достигли предела символов', True, (0, 0, 0))
     text_7 = font_er.render(f'Этот логин или пароль уже заняты', True, (0, 0, 0))
     login_text = ''
     password_text = ''
@@ -101,10 +102,12 @@ def registration():
                             password_flag = True
 
             if event.type == pygame.KEYDOWN and login_flag:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_CLEAR and login_text != '':
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_0 and login_text != '':
                     login_text = login_text[:-1]
+                    text_3 = font.render(login_text, True, (0, 0, 0))
                 else:
-                    if 65 <= event.key <= 122 and event.key != 91 and event.key != 92 and event.key != 93:
+                    if 65 <= event.key <= 122 and event.key != 91 and event.key != 92 and event.key != 93\
+                            and len(login_text) < 18:
                         login_text += chr(event.key)
                         text_3 = font.render(login_text, True, (0, 0, 0))
                         error_flag = False
@@ -112,10 +115,12 @@ def registration():
                         error_flag = True
 
             if event.type == pygame.KEYDOWN and password_flag:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_CLEAR and password_text != '':
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_0 and password_text != '':
                     password_text = password_text[:-1]
+                    text_4 = font.render(password_text, True, (0, 0, 0))
                 else:
-                    if 65 <= event.key <= 122 and event.key != 91 and event.key != 92 and event.key != 93:
+                    if 65 <= event.key <= 122 and event.key != 91 and event.key != 92 and event.key != 93\
+                            and len(password_text) < 18:
                         password_text += chr(event.key)
                         text_4 = font.render(password_text, True, (0, 0, 0))
                         error_flag = False
@@ -133,6 +138,7 @@ def registration():
         if error_flag and not space_flag:
             screen.blit(text_5, (75, 230))
             screen.blit(text_6, (35, 260))
+            screen.blit(text_8, (0, 290))
         if error_log_pas:
             screen.blit(text_7, (5, 0))
         screen.blit(text_3, (55, 70))

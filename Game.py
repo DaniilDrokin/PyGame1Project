@@ -238,7 +238,6 @@ def game():
                     WHERE login = (?)''', (login,)).fetchall()
                     for elem in b:
                         record = int(elem[0])
-                    print(record)
                     if wolf.score > record:
                         cursor.execute('''Update records set record = (?)
                         WHERE login = (?) and  password = (?)''', (wolf.score, login, password))

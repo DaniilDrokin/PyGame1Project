@@ -1,10 +1,8 @@
 import pygame
-
 import sqlite3
 
 
 def registration():
-
     def draw():
         screen.blit(text_1, (50, 125))
         screen.blit(text_2, (50, 25))

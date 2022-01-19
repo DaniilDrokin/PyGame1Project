@@ -1,6 +1,7 @@
 import pygame
 import os
 from Game import game
+from Records import records
 
 
 def start_screen():
@@ -116,7 +117,7 @@ def start_screen():
                     if but == 'Play':
                         game()
                     elif but == 'Records':
-                        pass
+                        records()
                     elif but == 'History':
                         pass
                     elif but == 'Settings':

@@ -102,7 +102,7 @@ def registration():
                             password_flag = True
 
             if event.type == pygame.KEYDOWN and login_flag:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_0 and login_text != '':
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE and login_text != '':
                     login_text = login_text[:-1]
                     text_3 = font.render(login_text, True, (0, 0, 0))
                 else:
@@ -115,7 +115,7 @@ def registration():
                         error_flag = True
 
             if event.type == pygame.KEYDOWN and password_flag:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_0 and password_text != '':
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE and password_text != '':
                     password_text = password_text[:-1]
                     text_4 = font.render(password_text, True, (0, 0, 0))
                 else:

@@ -3,7 +3,7 @@ import pygame
 import os
 
 
-def records():
+def records():  # Функция, отвечающая за вывод рекордов
     def load_image(name, colorkey=None):
         fullname = os.path.join("data", name)
         image = pygame.image.load(fullname)
@@ -16,7 +16,8 @@ def records():
             image = image.convert_alpha()
         return image
 
-    def draw(your_record):
+    def draw(your_record):  # Функция рисования
+        # Вывод различных кубков и цвета текста при разном рекорде
         if your_record >= 200:
             screen.fill((196, 195, 195))
             screen.blit(load_image("cup_golden.png"), (150, 50))
@@ -41,7 +42,10 @@ def records():
     size = 600, 800
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('Рекорд')
+    font_2 = pygame.font.Font('data/Rex Bold.ttf', 20)
+    text_3 = font_2.render(f'ESC для выхода', True, (0, 0, 0))
 
+    # Получение логина и пароля, зарегистрированного пользователя, из txt файла
     with open("data/log_pas.txt") as file:
         data = list(map(str.strip, file.readlines()))
         for elem in data:
@@ -51,6 +55,7 @@ def records():
     fanfare_sound = pygame.mixer.Sound("data/fanfare.wav")
     flag = True
 
+    # Получение рекорда из БД
     conn = sqlite3.connect('data/Records.db')
     cursor = conn.cursor()
     find_rec = cursor.execute('''SELECT record FROM records
@@ -70,10 +75,11 @@ def records():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:  # Закрытие окна при нажатии ESCAPE
                 if event.key == pygame.K_ESCAPE:
                     running = False
         draw(record)
+        screen.blit(text_3, (10, 775))
         pygame.display.flip()
 
 

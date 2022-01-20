@@ -1,12 +1,13 @@
 import pygame
 
 
-def reg_rules():
+def reg_rules():  # Функция, отвечающая за правил регистрации
     pygame.init()
     size = 800, 600
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('Как начать играть')
 
+    # Создание шрифтов и текстов
     font = pygame.font.Font('data/Rex Bold.ttf', 50)
     font_1 = pygame.font.Font('data/Rex Bold.ttf', 35)
     text = font.render(f'ЗДРАВСТВУЙ, Дорогой Пользователь!', True, (196, 30, 58))
@@ -27,11 +28,11 @@ def reg_rules():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:  # Закрытие окна при нажатии ESCAPE
                 if event.key == pygame.K_SPACE:
                     running = False
+        # Вывод текста
         screen.blit(text, (35, 20))
-
         screen.blit(text_1, (100, 80))
         screen.blit(text_2, (35, 125))
         screen.blit(text_3, (70, 170))
@@ -47,4 +48,3 @@ def reg_rules():
 
 if __name__ == '__main__':
     reg_rules()
-

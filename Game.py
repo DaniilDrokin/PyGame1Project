@@ -4,8 +4,8 @@ import os
 import sqlite3
 
 
-def game():
-    def load_image(name, colorkey=None):
+def game():  # Функция, отвечающая за саму игру
+    def load_image(name, colorkey=None):  # Функция, отвечающая за загрузку изображений
         fullname = os.path.join("data", name)
         image = pygame.image.load(fullname)
         if colorkey is not None:
@@ -17,7 +17,7 @@ def game():
             image = image.convert_alpha()
         return image
 
-    class Grass(pygame.sprite.Sprite):
+    class Grass(pygame.sprite.Sprite):  # Класс спрайта травы
         def __init__(self):
             super().__init__(all_sprites)
             self.image = load_image("grass.png")
@@ -25,13 +25,13 @@ def game():
             self.mask = pygame.mask.from_surface(self.image)
             self.rect.bottom = height + 60
 
-    class Egg(pygame.sprite.Sprite):
+    class Egg(pygame.sprite.Sprite):  # Класс спрайта яйца
         def __init__(self, position, number):
             super().__init__(egg_sprites)
             self.images = []
             self.position = number
 
-            if self.position == 0 or self.position == 1:
+            if self.position == 0 or self.position == 1:  # Расчет анимации относительно точки появления
                 self.images.append(load_image('egg1.png'))
                 self.images.append(load_image('egg6.png'))
                 self.images.append(load_image('egg2.png'))
@@ -63,7 +63,7 @@ def game():
             self.flag = False
             self.count = 1
 
-        def update(self, *args):
+        def update(self, *args):  # Расчет движения яйца
             speed = args[0]
             if self.position == 0 or self.position == 1:
                 if not pygame.sprite.collide_mask(self, grass) and pygame.sprite.collide_mask(self, house_1):
@@ -76,10 +76,10 @@ def game():
                 if not pygame.sprite.collide_mask(self, grass) and not pygame.sprite.collide_mask(self, house_2):
                     self.rect = self.rect.move(0, speed + 2)
 
-            if speed % 20 == 0 and self.frame >= 4:
+            if speed % 20 == 0 and self.frame >= 4:  # Расчет анимации при ускорении яйца
                 self.frame -= 1
 
-            if pygame.sprite.collide_mask(self, grass):
+            if pygame.sprite.collide_mask(self, grass):  # Раскол яйца при соприкосновении с травой
                 self.flag = True
                 self.image = load_image('broken_egg.png')
                 if self.sound_flag:
@@ -89,7 +89,7 @@ def game():
                     while self.count == 1:
                         elem.kill()
                         self.count -= 1
-            else:
+            else:  # Воспроизведение анимации
                 self.counter += 1
                 if self.counter == self.frame:
                     self.index += 1
@@ -101,7 +101,7 @@ def game():
         def flag(self):
             return self.flag
 
-    class House(pygame.sprite.Sprite):
+    class House(pygame.sprite.Sprite):  # Класс спрайта курятника
         def __init__(self, picture, x):
             super().__init__(all_sprites)
             self.image = load_image(picture)
@@ -110,7 +110,7 @@ def game():
             self.rect.x = x
             self.rect.bottom = height - 100
 
-    class Wolf(pygame.sprite.Sprite):
+    class Wolf(pygame.sprite.Sprite):  # Класс спрайта волка
         def __init__(self):
             super().__init__(all_sprites)
             self.image = load_image('wolf_1.png')
@@ -120,20 +120,20 @@ def game():
             self.rect.y = 340
             self.score = 0
 
-        def move(self, x, y, photo):
+        def move(self, x, y, photo):  # Перенос волка при нажатии клавиш
             self.image = load_image(photo)
             self.mask = pygame.mask.from_surface(self.image)
             self.rect.x = x
             self.rect.y = y
 
-        def update(self):
+        def update(self):  # Удаление яйца, если волк его ловит
             for elem in egg_sprites:
                 if pygame.sprite.collide_mask(self, elem) and not elem.flag:
                     fall_sound.play()
                     elem.kill()
                     self.score += 1
 
-    class Heart(pygame.sprite.Sprite):
+    class Heart(pygame.sprite.Sprite):  # Класс спрайта жизни
         def __init__(self, x, name):
             super().__init__(heart_sprites)
             self.image = load_image('heart.png')
@@ -148,6 +148,7 @@ def game():
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('НУ, ПОГОДИ!')
 
+    # Загрузка звуков
     sad_sound = pygame.mixer.Sound("data/sad_sound.wav")
     sad_sound.set_volume(0.5)
     broken_sound = pygame.mixer.Sound("data/egg_shell.wav")
@@ -158,6 +159,7 @@ def game():
     fall_sound = pygame.mixer.Sound("data/fall.wav")
     fall_sound.set_volume(0.4)
 
+    # Группы спрайтов
     all_sprites = pygame.sprite.Group()
     egg_sprites = pygame.sprite.Group()
     heart_sprites = pygame.sprite.Group()
@@ -178,7 +180,7 @@ def game():
 
     my_event = pygame.USEREVENT + 1
     timer = 3000
-    pygame.time.set_timer(my_event, timer)
+    pygame.time.set_timer(my_event, timer)  # Создание собственного ивента, для появления яиц через определенное время
     count_of_eggs = 0
     velocity = 1
     pos_x_hearts = 1000
@@ -186,45 +188,45 @@ def game():
     second_egg = False
     record = 0
 
-    for i in range(3):
+    for i in range(3):  # Создание сердец(жизней)
         name = 'heart' + str(i)
         Heart(pos_x_hearts, name)
         pos_x_hearts -= 125
     while running:
-        if background_sound_flag:
+        if background_sound_flag:  # Фоновая музыка
             sound.play(loops=-1)
             background_sound_flag = False
         for event in pygame.event.get():
 
-            if event.type == pygame.QUIT:
-                sound.stop()
+            if event.type == pygame.QUIT:  # Выход из игры при закрытии окна
+                sound.stop()  # Отключение фоновой музыки при закрытии окна
                 running = False
 
-            if event.type == my_event and heart_sprites:
+            if event.type == my_event and heart_sprites:  # Появление яиц
                 count_of_eggs += 1
                 number = random.randint(0, 3)
                 Egg(positions_for_eggs[number], number)
-                if second_egg:
+                if second_egg:  # Появление второго яйца
                     if number == 0:
-                        number = random.choice([1, 2, 2, 3, 3])
+                        number = random.choice([1, 2, 3])
                     elif number == 1:
-                        number = random.choice([0, 2, 2, 3, 3])
+                        number = random.choice([0, 2, 3])
                     elif number == 2:
-                        number = random.choice([0, 0, 1, 1, 3])
+                        number = random.choice([0, 1, 3])
                     elif number == 3:
-                        number = random.choice([0, 0, 1, 1, 2])
+                        number = random.choice([0, 1, 2])
                     Egg(positions_for_eggs[number], number)
-                if count_of_eggs == 10 and velocity < 15:
+                if count_of_eggs == 10 and velocity < 15:  # Увеличение скорости передвижения яиц
                     velocity += 1
-                if count_of_eggs == 20 and timer > 300:
+                if count_of_eggs == 20 and timer > 300:  # Увеличение скорости появления яиц
                     timer -= 300
                     pygame.time.set_timer(my_event, timer)
                     count_of_eggs = 0
-                if count_of_eggs == 15 and egg_flag:
+                if count_of_eggs == 15 and egg_flag:  # Появление второго яйца
                     egg_flag = False
                     second_egg = True
 
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:  # Запись рекорда в БД, если он был побит
                 if event.key == pygame.K_SPACE and end_flag:
                     conn = sqlite3.connect('data/Records.db')
                     cursor = conn.cursor()
@@ -244,6 +246,8 @@ def game():
                     conn.commit()
                     conn.close()
                     running = False
+
+                # Перенос модельки волка в зависимости от нажатия клавиш
                 if event.key == pygame.K_e and heart_sprites:
                     wolf.move(240, 340, "wolf_3.png")
                 if event.key == pygame.K_f and heart_sprites:
@@ -253,6 +257,7 @@ def game():
                 if event.key == pygame.K_j and heart_sprites:
                     wolf.move(600, 410, "wolf_2.png")
 
+        # Отрисовка и обновление необходимых вещей
         screen.fill((179, 221, 247))
         screen.blit(load_image("fence.png"), (0, 440))
         all_sprites.draw(screen)
@@ -262,9 +267,11 @@ def game():
         heart_sprites.draw(screen)
         heart_sprites.update()
 
+        # Отрисовка счета
         text = f.render(f'{wolf.score}', True, (196, 30, 58))
         screen.blit(text, (300, 80))
 
+        # Добавление декора
         screen.blit(load_image("bush.png"), (-13, 580))
         screen.blit(load_image("bush.png"), (1087, 580))
         screen.blit(load_image("chicken.png"), (-70, 380))
@@ -273,12 +280,12 @@ def game():
         screen.blit(load_image("chick.png"), (-20, 215))
         screen.blit(load_image("nest.png"), (-80, 165))
 
-        if not heart_sprites:
+        if not heart_sprites:  # Появления экрана проигрыша
             sound.stop()
             end_flag = True
             pygame.draw.rect(screen, (255, 250, 205), (0, 0, width, height), 0)
             f_2 = pygame.font.Font('data/Rex Bold.ttf', 30)
-            if wolf.score >= 100:
+            if wolf.score >= 100:  # Появления экрана при счете больше 100
                 f_1 = pygame.font.Font('data/Rex Bold.ttf', 130)
                 obj = 'ВЫ ХОРОШО ДЕРЖАЛИСЬ!'
                 if sound_flag:
@@ -287,7 +294,7 @@ def game():
                 screen.blit(load_image("wolf_6.png"), (500, 375))
                 text = f_1.render(obj, True, (196, 30, 58))
                 screen.blit(text, (60, 250))
-            else:
+            else:  # Появления экрана проигрыша при счете меньше 100
                 f_1 = pygame.font.Font('data/Rex Bold.ttf', 200)
                 obj = 'ВЫ ПРОИГРАЛИ!'
                 if sound_flag:

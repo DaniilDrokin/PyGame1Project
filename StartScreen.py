@@ -1,3 +1,4 @@
+# Импорт необходимых функций из других файлов и библиотек
 import pygame
 import os
 from Game import game
@@ -6,8 +7,8 @@ from Rules import rules
 from History import history
 
 
-def start_screen():
-    def load_image(name, colorkey=None):
+def start_screen():  # Функция начального экрана
+    def load_image(name, colorkey=None):  # Функция6 отвечающая за загрузку изображения
         fullname = os.path.join("data", name)
         image = pygame.image.load(fullname)
         if colorkey is not None:
@@ -19,7 +20,7 @@ def start_screen():
             image = image.convert_alpha()
         return image
 
-    class Button(pygame.sprite.Sprite):
+    class Button(pygame.sprite.Sprite):  # Класс кнопок
         def __init__(self, x, y, radius, name):
             super().__init__(button_sprites)
             self.name = name
@@ -27,19 +28,19 @@ def start_screen():
             pygame.draw.circle(self.image, (196, 30, 58), (radius, radius), radius)
             self.rect = pygame.Rect(x, y, 2 * radius, 2 * radius)
 
-        def update(self, *args):
+        def update(self, *args):  # Проверка нажатия, и при нажатии воспроизводится звук
             if args and args[0].type == pygame.MOUSEBUTTONDOWN and args[0].button == 1\
                     and self.tip(args[0].pos):
                 button_sound.play()
                 return self.name
 
-        def give_name(self):
+        def give_name(self):  # Возвращает имя кнопки
             return self.name
 
-        def tip(self, pos):
+        def tip(self, pos):  # Возвращает(True, False), пересекается ли курсор мыши и кнопка
             return self.rect.collidepoint(pos)
 
-    def draw():
+    def draw():  # Функция рисования
         pygame.draw.rect(screen, (112, 112, 112), (0, 0, 1360, 800), 10)
         pygame.draw.rect(screen, (218, 236, 253), (340, 120, 680, 550), 0)
         pygame.draw.rect(screen, (112, 112, 112), (340, 120, 680, 550), 5)
@@ -74,6 +75,7 @@ def start_screen():
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('Начальный экран')
 
+    # Подключение шрифтов
     font_1 = pygame.font.Font('data/Molot.ttf', 40)
     font_2 = pygame.font.Font('data/Days.ttf', 40)
     font_3 = pygame.font.Font('data/Rex Bold.ttf', 70)
@@ -88,14 +90,14 @@ def start_screen():
     radius = 40
     buttons = ['Rules', 'Play', 'Records', 'History']
     coordinates = [(130, 450), (130, 650), (1150, 450), (1150, 650)]
-    for i in range(4):
+    for i in range(4):  # Создание кнопок
         x, y = coordinates[i]
         name = buttons[i]
         Button(x, y, radius, name)
     while running:
         screen.fill((196, 195, 195))
 
-        for button in button_sprites:
+        for button in button_sprites:  # Вывод подсказок для пользователя, за что отвечает какая кнопка
             if button.tip(pygame.mouse.get_pos()):
                 if button.give_name() == 'Play':
                     text_4 = font_4.render(f'Play', True, (0, 0, 0))
@@ -113,22 +115,22 @@ def start_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:  # Открытие выбранных пользователем окон
                 for button in button_sprites:
                     but = button.update(event)
                     if but == 'Play':
                         game()
                     elif but == 'Records':
                         records()
-                        size = 1360, 800
+                        size = 1360, 800  # Возвращение "стандартного" формата экрану
                         screen = pygame.display.set_mode(size)
                     elif but == 'History':
                         history()
-                        size = 1360, 800
+                        size = 1360, 800  # Возвращение "стандартного" формата экрану
                         screen = pygame.display.set_mode(size)
                     elif but == 'Rules':
                         rules()
-                        size = 1360, 800
+                        size = 1360, 800  # Возвращение "стандартного" формата экрану
                         screen = pygame.display.set_mode(size)
         button_sprites.draw(screen)
         draw()

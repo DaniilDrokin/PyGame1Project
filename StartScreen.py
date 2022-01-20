@@ -84,7 +84,7 @@ def start_screen():
 
     running = True
     radius = 40
-    buttons = ['Settings', 'Play', 'Records', 'History']
+    buttons = ['Rules', 'Play', 'Records', 'History']
     coordinates = [(130, 450), (130, 650), (1150, 450), (1150, 650)]
     for i in range(4):
         x, y = coordinates[i]
@@ -101,9 +101,9 @@ def start_screen():
                 elif button.give_name() == 'History':
                     text_4 = font_4.render(f'History', True, (0, 0, 0))
                     screen.blit(text_4, (button.rect.x - 30, button.rect.y - 45))
-                elif button.give_name() == 'Settings':
-                    text_4 = font_4.render(f'Settings', True, (0, 0, 0))
-                    screen.blit(text_4, (button.rect.x - 40, button.rect.y + 85))
+                elif button.give_name() == 'Rules':
+                    text_4 = font_4.render(f'Rules', True, (0, 0, 0))
+                    screen.blit(text_4, (button.rect.x - 10, button.rect.y + 85))
                 elif button.give_name() == 'Records':
                     text_4 = font_4.render(f'Records', True, (0, 0, 0))
                     screen.blit(text_4, (button.rect.x - 40, button.rect.y + 85))
@@ -118,9 +118,11 @@ def start_screen():
                         game()
                     elif but == 'Records':
                         records()
+                        size = 1360, 800
+                        screen = pygame.display.set_mode(size)
                     elif but == 'History':
                         pass
-                    elif but == 'Settings':
+                    elif but == 'Rules':
                         pass
         button_sprites.draw(screen)
         draw()

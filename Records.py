@@ -1,20 +1,44 @@
 import sqlite3
 import pygame
+import os
 
 
 def records():
+    def load_image(name, colorkey=None):
+        fullname = os.path.join("data", name)
+        image = pygame.image.load(fullname)
+        if colorkey is not None:
+            image = image.convert()
+            if colorkey == -1:
+                colorkey = image.get_at((0, 0))
+            image.set_colorkey(colorkey)
+        else:
+            image = image.convert_alpha()
+        return image
+
     def draw(your_record):
         if your_record >= 200:
-            print(1)
+            screen.fill((196, 195, 195))
+            screen.blit(load_image("cup_golden.png"), (150, 50))
+            text = font.render(f'ВАШ РЕКОРД:', True, (255, 215, 0))
+            text_1 = font.render(f'{your_record}', True, (255, 215, 0))
+            screen.blit(text_1, (225, 625))
         elif your_record >= 100:
-            print(2)
-        elif your_record >= 50:
-            print(3)
+            screen.fill((255, 255, 255))
+            screen.blit(load_image("cup_silver.png"), (-200, 50))
+            text = font.render(f'ВАШ РЕКОРД:', True, (192, 192, 192))
+            text_1 = font.render(f'{your_record}', True, (192, 192, 192))
+            screen.blit(text_1, (225, 625))
         else:
-            print(4)
+            screen.fill((196, 195, 195))
+            screen.blit(load_image("cup_bronze.png"), (-525, 50))
+            text = font.render(f'ВАШ РЕКОРД:', True, (205, 127, 50))
+            text_1 = font.render(f'{your_record}', True, (205, 127, 50))
+            screen.blit(text_1, (275, 625))
+        screen.blit(text, (50, 525))
 
     pygame.init()
-    size = 1360, 800
+    size = 600, 800
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('Рекорд')
 
@@ -22,6 +46,10 @@ def records():
         data = list(map(str.strip, file.readlines()))
         for elem in data:
             login, password = elem.split()
+
+    font = pygame.font.Font('data/Rex Bold.ttf', 100)
+    fanfare_sound = pygame.mixer.Sound("data/fanfare.wav")
+    flag = True
 
     conn = sqlite3.connect('data/Records.db')
     cursor = conn.cursor()
@@ -36,10 +64,15 @@ def records():
     running = True
 
     while running:
-        screen.fill((196, 195, 195))
+        if flag:
+            fanfare_sound.play()
+            flag = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
         draw(record)
         pygame.display.flip()
 

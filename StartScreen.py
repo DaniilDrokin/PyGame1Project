@@ -2,6 +2,7 @@ import pygame
 import os
 from Game import game
 from Records import records
+from Rules import rules
 
 
 def start_screen():
@@ -123,7 +124,9 @@ def start_screen():
                     elif but == 'History':
                         pass
                     elif but == 'Rules':
-                        pass
+                        rules()
+                        size = 1360, 800
+                        screen = pygame.display.set_mode(size)
         button_sprites.draw(screen)
         draw()
         pygame.display.flip()

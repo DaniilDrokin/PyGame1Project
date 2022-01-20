@@ -35,12 +35,12 @@ def reg_rules():
         screen.blit(text_1, (100, 80))
         screen.blit(text_2, (35, 125))
         screen.blit(text_3, (70, 170))
-        screen.blit(text_6, (60, 205))
-        screen.blit(text_7, (250, 250))
-        screen.blit(text_9, (120, 295))
-        screen.blit(text_10, (100, 340))
-        screen.blit(text_11, (280, 385))
-        screen.blit(text_12, (150, 550))
+        screen.blit(text_6, (60, 215))
+        screen.blit(text_7, (240, 255))
+        screen.blit(text_9, (120, 305))
+        screen.blit(text_10, (110, 345))
+        screen.blit(text_11, (280, 390))
+        screen.blit(text_12, (152, 550))
 
         pygame.display.flip()
 

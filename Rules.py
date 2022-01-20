@@ -34,7 +34,7 @@ def rules():
         screen.blit(text_1, (100, 85))
         screen.blit(text_2, (15, 120))
         screen.blit(text_3, (50, 160))
-        screen.blit(text_6, (210, 200))
+        screen.blit(text_6, (230, 200))
         screen.blit(text_7, (150, 240))
         screen.blit(text_9, (80, 270))
         screen.blit(text_10, (50, 310))

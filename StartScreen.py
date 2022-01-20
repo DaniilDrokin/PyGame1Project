@@ -3,6 +3,7 @@ import os
 from Game import game
 from Records import records
 from Rules import rules
+from History import history
 
 
 def start_screen():
@@ -122,7 +123,9 @@ def start_screen():
                         size = 1360, 800
                         screen = pygame.display.set_mode(size)
                     elif but == 'History':
-                        pass
+                        history()
+                        size = 1360, 800
+                        screen = pygame.display.set_mode(size)
                     elif but == 'Rules':
                         rules()
                         size = 1360, 800

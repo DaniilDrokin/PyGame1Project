@@ -4,7 +4,7 @@ from Registration import registration
 from Reg_rules import reg_rules
 
 
-def main():  # Основная функция, которая отвечается за запуск всех программы
+def main():  # Основная функция, которая отвечает за запуск всех программы
     reg_rules()
     registration()
     start_screen()

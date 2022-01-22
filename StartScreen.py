@@ -9,7 +9,7 @@ from History import history
 
 def start_screen():  # Функция начального экрана
     def load_image(name, colorkey=None):  # Функция6 отвечающая за загрузку изображения
-        fullname = os.path.join("PyGame1Project/data", name)
+        fullname = os.path.join("data", name)
         image = pygame.image.load(fullname)
         if colorkey is not None:
             image = image.convert()
@@ -76,15 +76,15 @@ def start_screen():  # Функция начального экрана
     pygame.display.set_caption('Начальный экран')
 
     # Подключение шрифтов
-    font_1 = pygame.font.Font('PyGame1Project/data/Molot.ttf', 40)
-    font_2 = pygame.font.Font('PyGame1Project/data/Days.ttf', 40)
-    font_3 = pygame.font.Font('PyGame1Project/data/Rex Bold.ttf', 70)
-    font_4 = pygame.font.Font('PyGame1Project/data/Rex Bold.ttf', 50)
+    font_1 = pygame.font.Font('data/Molot.ttf', 40)
+    font_2 = pygame.font.Font('data/Days.ttf', 40)
+    font_3 = pygame.font.Font('data/Rex Bold.ttf', 70)
+    font_4 = pygame.font.Font('data/Rex Bold.ttf', 50)
     text_1 = font_1.render(f'НУ, ПОГОДИ!', True, (196, 30, 58))
     text_2 = font_2.render(f'электроника', True, (0, 0, 0))
     text_3 = font_3.render(f'А|Д', True, (0, 0, 0))
 
-    button_sound = pygame.mixer.Sound("PyGame1Project/data/button.wav")
+    button_sound = pygame.mixer.Sound("data/button.wav")
 
     running = True
     radius = 40

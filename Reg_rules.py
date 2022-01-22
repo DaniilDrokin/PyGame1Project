@@ -8,8 +8,8 @@ def reg_rules():  # Функция, отвечающая за правил ре�
     pygame.display.set_caption('Как начать играть')
 
     # Создание шрифтов и текстов
-    font = pygame.font.Font('PyGame1Project/data/Rex Bold.ttf', 50)
-    font_1 = pygame.font.Font('PyGame1Project/data/Rex Bold.ttf', 35)
+    font = pygame.font.Font('data/Rex Bold.ttf', 50)
+    font_1 = pygame.font.Font('data/Rex Bold.ttf', 35)
     text = font.render(f'ЗДРАВСТВУЙ, Дорогой Пользователь!', True, (196, 30, 58))
     text_1 = font_1.render(f'Перед тем как вы сможете начать играть в', True, (0, 0, 0))
     text_2 = font_1.render(f'EGG_catcher, вам нужно будет зарегистрироваться,', True, (0, 0, 0))

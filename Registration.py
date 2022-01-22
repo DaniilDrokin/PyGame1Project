@@ -31,8 +31,8 @@ def registration():  # Функция, отвечающая за регистр�
     running = True
 
     # Необходимый текст
-    font = pygame.font.Font('PyGame1Project/data/Days.ttf', 40)
-    font_er = pygame.font.Font('PyGame1Project/data/Days.ttf', 30)
+    font = pygame.font.Font('data/Days.ttf', 40)
+    font_er = pygame.font.Font('data/Days.ttf', 30)
     text_1 = font.render(f'пароль:', True, (0, 0, 0))
     text_2 = font.render(f'логин:', True, (0, 0, 0))
     text_3 = font.render(f'', True, (0, 0, 0))
@@ -67,7 +67,7 @@ def registration():  # Функция, отвечающая за регистр�
                 running = False
             if event.type == pygame.KEYDOWN:  # Запись в БД пользователя, если оба поля заполнены и нажат пробел
                 if event.key == pygame.K_SPACE and password_text != '' and login_text != '':
-                    conn = sqlite3.connect('PyGame1Project/data/Records.db')
+                    conn = sqlite3.connect('data/Records.db')
                     cursor = conn.cursor()
                     was_login_before = cursor.execute('''SELECT login, password FROM records
                     WHERE login = (?) and  password = (?)''', (login_text, password_text,)).fetchall()
@@ -79,14 +79,14 @@ def registration():  # Функция, отвечающая за регистр�
                         # пользователе (логина пароля)
                         for elem in was_login_before:
                             login, password = elem
-                        with open("PyGame1Project/data/log_pas.txt", 'w') as f:
+                        with open("data/log_pas.txt", 'w') as f:
                             f.write(f'{login} {password}')
                         running = False
                     elif not log_in_db and not pas_in_db:  # Добавление ранее не зарегистрированного пользователя в БД
                         # Добавление в файл txt информации об этом пользователе(логина и пароля)
                         cursor.execute('''insert into records (login, password, record) values (?, ?, ?)''',
                                        (login_text, password_text, 0,))
-                        with open("PyGame1Project/data/log_pas.txt", 'w') as f:
+                        with open("data/log_pas.txt", 'w') as f:
                             f.write(f'{login_text} {password_text}')
                         running = False
                     else:  # вывод ошибки в других случаях

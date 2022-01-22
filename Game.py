@@ -6,7 +6,7 @@ import sqlite3
 
 def game():  # Функция, отвечающая за саму игру
     def load_image(name, colorkey=None):  # Функция, отвечающая за загрузку изображений
-        fullname = os.path.join("data", name)
+        fullname = os.path.join("PyGame1Project/data", name)
         image = pygame.image.load(fullname)
         if colorkey is not None:
             image = image.convert()
@@ -149,14 +149,14 @@ def game():  # Функция, отвечающая за саму игру
     pygame.display.set_caption('НУ, ПОГОДИ!')
 
     # Загрузка звуков
-    sad_sound = pygame.mixer.Sound("data/sad_sound.wav")
+    sad_sound = pygame.mixer.Sound("PyGame1Project/data/sad_sound.wav")
     sad_sound.set_volume(0.5)
-    broken_sound = pygame.mixer.Sound("data/egg_shell.wav")
-    win_sound = pygame.mixer.Sound("data/win.wav")
+    broken_sound = pygame.mixer.Sound("PyGame1Project/data/egg_shell.wav")
+    win_sound = pygame.mixer.Sound("PyGame1Project/data/win.wav")
     win_sound.set_volume(0.5)
-    sound = pygame.mixer.Sound("data/background_sound.wav")
+    sound = pygame.mixer.Sound("PyGame1Project/data/background_sound.wav")
     sound.set_volume(0.2)
-    fall_sound = pygame.mixer.Sound("data/fall.wav")
+    fall_sound = pygame.mixer.Sound("PyGame1Project/data/fall.wav")
     fall_sound.set_volume(0.4)
 
     # Группы спрайтов
@@ -164,7 +164,7 @@ def game():  # Функция, отвечающая за саму игру
     egg_sprites = pygame.sprite.Group()
     heart_sprites = pygame.sprite.Group()
 
-    f = pygame.font.Font('data/Rex Bold.ttf', 100)
+    f = pygame.font.Font('PyGame1Project/data/Rex Bold.ttf', 100)
 
     grass = Grass()
     wolf = Wolf()
@@ -228,10 +228,10 @@ def game():  # Функция, отвечающая за саму игру
 
             if event.type == pygame.KEYDOWN:  # Запись рекорда в БД, если он был побит
                 if event.key == pygame.K_SPACE and end_flag:
-                    conn = sqlite3.connect('data/Records.db')
+                    conn = sqlite3.connect('PyGame1Project/data/Records.db')
                     cursor = conn.cursor()
 
-                    with open("data/log_pas.txt") as file:
+                    with open("PyGame1Project/data/log_pas.txt") as file:
                         data = list(map(str.strip, file.readlines()))
                         for elem in data:
                             login, password = elem.split()
@@ -284,9 +284,9 @@ def game():  # Функция, отвечающая за саму игру
             sound.stop()
             end_flag = True
             pygame.draw.rect(screen, (255, 250, 205), (0, 0, width, height), 0)
-            f_2 = pygame.font.Font('data/Rex Bold.ttf', 30)
+            f_2 = pygame.font.Font('PyGame1Project/data/Rex Bold.ttf', 30)
             if wolf.score >= 100:  # Появления экрана при счете больше 100
-                f_1 = pygame.font.Font('data/Rex Bold.ttf', 130)
+                f_1 = pygame.font.Font('PyGame1Project/data/Rex Bold.ttf', 130)
                 obj = 'ВЫ ХОРОШО ДЕРЖАЛИСЬ!'
                 if sound_flag:
                     win_sound.play()
@@ -295,7 +295,7 @@ def game():  # Функция, отвечающая за саму игру
                 text = f_1.render(obj, True, (196, 30, 58))
                 screen.blit(text, (60, 250))
             else:  # Появления экрана проигрыша при счете меньше 100
-                f_1 = pygame.font.Font('data/Rex Bold.ttf', 200)
+                f_1 = pygame.font.Font('PyGame1Project/data/Rex Bold.ttf', 200)
                 obj = 'ВЫ ПРОИГРАЛИ!'
                 if sound_flag:
                     sad_sound.play()
